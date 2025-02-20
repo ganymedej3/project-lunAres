@@ -80,6 +80,8 @@ The framework consists of several key components:
 The architecture is visually represented using a [Mermaid diagram](https://mermaid.js.org/) in the `docs/architecture.md` file.
 
 ## Project Structure
+
+```
 project-lunAres/
 ├── config/
 │   ├── config.json                  // Target AUT URL, global timeout, screenshot directory, etc.
@@ -107,6 +109,7 @@ project-lunAres/
 ├── package.json
 ├── tsconfig.json
 └── README.md                        // Project documentation
+```
 
 ## Setup & Installation
 
