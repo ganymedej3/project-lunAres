@@ -8,8 +8,8 @@ export class DetailedReportGenerator {
 
   /**
    * Generates a final aggregated text report that provides detailed AI insights
-   * for only the serious and critical violations for each page.
-   * Reads the basic report from disk, processes it, and writes the detailed report.
+   * for only the serious and critical violations for each page. It then sends
+   * the aggregated per-page reports back to the AI to get cross-page patterns and stats.
    */
   public async generateDetailedReport(): Promise<void> {
     // Load the basic report from disk
@@ -25,7 +25,7 @@ export class DetailedReportGenerator {
       // Iterate over each page result
       for (const pageResult of browserReport.pageResults) {
         const pageLabel = pageResult.label;
-        // Assume axeResults.violations array exists for each pageResult.
+        // Assume violations are in axeResults.violations array.
         const violations = pageResult.axeResults?.violations || [];
         const filteredViolations = violations.filter((v: any) => {
           const impact = (v.impact || "").toLowerCase();
@@ -48,12 +48,26 @@ export class DetailedReportGenerator {
           pageInsight = `Error generating insights: ${error}`;
         }
         
-        // Append to final report parts with a clear separator.
+        // Append page header and insights
         finalReportParts.push(`===== ${browser} - ${pageLabel} =====\n${pageInsight}\n`);
       }
     }
 
-    const finalReport = finalReportParts.join("\n");
+    // Combine all page insights into one aggregated text report.
+    let aggregatedTextReport = finalReportParts.join("\n");
+
+    // Now call the LLM one more time to get aggregated stats and cross-page patterns.
+    const aggregatedPrompt = this.buildAggregatedPrompt(aggregatedTextReport);
+    this.logger.log("Generating aggregated cross-page insights...");
+    let aggregatedInsights = "";
+    try {
+      aggregatedInsights = await AIManager.generateText(aggregatedPrompt);
+    } catch (error) {
+      aggregatedInsights = `Error generating aggregated insights: ${error}`;
+    }
+
+    // Append the aggregated insights at the end of the final report.
+    const finalReport = aggregatedTextReport + "\n\n===== Aggregated Insights =====\n" + aggregatedInsights;
     const reportPath = path.join(process.cwd(), "report-ai.txt");
     fs.writeFileSync(reportPath, finalReport, "utf8");
     this.logger.log(`Final AI-enhanced report written to ${reportPath}`);
@@ -74,17 +88,41 @@ Page information:
 - Browser: ${browser}
 - Page Label: ${pageLabel}
 
-For each violation in the JSON array, provide a detailed analysis including:
-1. Contextual Summary: A brief summary of the violation in context.
-2. Issue Description: A clear description of the problem.
-3. Priority: A computed priority based on the axe-core impact (serious/critical) and perceived user experience impact.
-4. WCAG Reference: The applicable WCAG 2.2 guideline(s) (if available, typically from the violation's tags).
-5. Remediation: Detailed remediation recommendations.
+For each violation in the JSON array, provide a detailed analysis that includes the following:
+1. Contextual Summary: A brief summary of the violation in context. Include the violation ID and impact from the below violationsData array
+2. Impacted Elements: List the HTML elements impacted (using information from the violation's nodes)
+3. User-Centric Explanation: Combine the raw impact (serious/critical) with a short statement explaining how the violation affects users (e.g., screen reader users might be unable to perceive content, causing navigation and comprehension issues).
+4. User Story/Business Impact: Provide a user story or business impact summary, for example, "When a user with a screen reader tries to fill out the Contact Form, the labeling issue causes confusion leading to form abandonment."
+5. WCAG Reference: List the applicable WCAG 2.2 guideline(s) (if available, typically found in the violation's tags).
+6. Remediation: Provide detailed remediation recommendations tailored to that violation.
 
-ONLY output a structured plain text response with each violation clearly delineated (e.g., numbered or with headings). Do NOT output any extra commentary outside of the analysis for each violation.
+ONLY output a structured plain text response for each violation (e.g., numbered or with clear headings). Do not output any extra commentary.
 
 Below is the JSON array of violations:
 ${violationsData}
+    `;
+    return prompt;
+  }
+
+  /**
+   * Builds a prompt to generate aggregated cross-page insights.
+   * @param aggregatedText The complete text report generated from individual pages.
+   * @returns The prompt string.
+   */
+  private buildAggregatedPrompt(aggregatedText: string): string {
+    const prompt = `
+You are an expert accessibility auditor. You are provided with a detailed plain text report of accessibility issues for multiple pages (each page is separated by clear headers).
+Based on this report, please generate an aggregated analysis that includes:
+- Overall statistics (e.g., total number of serious/critical violations across pages).
+- Common patterns or recurring issues across different pages.
+- Any cross-page insights, such as similar remediation recommendations or frequently impacted elements.
+- Suggestions for prioritizing remediation efforts at the site level.
+
+ONLY output a plain text summary with clear sections (e.g., Overall Statistics, Common Patterns, Recommendations).
+Do NOT output any extra commentary.
+
+Below is the detailed per-page report:
+${aggregatedText}
     `;
     return prompt;
   }
