@@ -2,7 +2,7 @@
 
 **AI-Enhanced Accessibility Testing Framework**
 
-Project lunAres is an AI-enhanced accessibility testing framework that uses Playwright and axe-core to perform multi-page, multi-flow accessibility audits on a target website. The framework simulates real user interactions (including dynamic menu navigation and keyboard flows) and leverages a local LLM (e.g., mistral:7b-instruct via Ollama) to provide detailed, actionable remediation insights based on the audit results. This project builds on the concepts and lessons learned from Project Bennu.
+Project lunAres is an AI-enhanced accessibility testing framework that uses Playwright and axe-core to perform multi-page, multi-flow accessibility audits on a target website. The framework simulates real user interactions (including dynamic menu navigation and keyboard flows) and leverages a local LLM (e.g., mistral:7b-instruct via Ollama) to provide detailed, actionable remediation insights based on the audit results. This project builds on the concepts and lessons learned from [Project Bennu](https://github.com/ganymedej3/project-bennu).
 
 ## Table of Contents
 
