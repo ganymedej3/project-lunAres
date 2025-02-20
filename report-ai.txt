@@ -1,201 +1,197 @@
 ===== chrome - Homepage =====
 1. Contextual Summary:
-     - Violation ID: aria-required-children
-     - Impact: Critical
-     - Description: The Homepage contains an ARIA role without the required child roles (ul[tabindex], a[tabindex]).
+   - Violation ID: aria-required-children
+   - Impact: critical
+   - The issue is related to ensuring that elements with an ARIA role contain the required child roles. This violation affects users of assistive technologies such as screen readers, causing confusion and potential navigation issues.
 
   2. Impacted Elements:
-     - The impacted elements are unordered lists (ul) and anchor tags (a) with tabindices, specifically:
-       - .footerCol:nth-child(1) > .desktop__footerlinks
-       - .footerCol:nth-child(2) > .desktop__footerlinks
-       - .footerCol:nth-child(3) > .desktop__footerlinks
-       - .footerCol:nth-child(4) > .desktop__footerlinks
-       - .footerCol:nth-child(5) > .desktop__footerlinks
-       - a[data-analytics-value="Study with Us"]
-       - a[href$="life-at-rmit"][data-analytics-value="Life at RMIT"][data-analytics-type="footerlink"]
-       - a[href$="research"][data-analytics-value="Research"][data-analytics-type="footerlink"]
-       - a[href$="partner"][data-analytics-value="Partner"][data-analytics-type="footerlink"]
-       - a[data-analytics-value="About"][href$="about"][data-analytics-type="footerlink"]
-     - Additionally, the parent container of the above elements, '#accordion' role='tablist'.
+   - `<ul class="desktop__footerlinks">` within the following HTML elements:
+     - ".footerCol:nth-child(1) > .desktop__footerlinks"
+     - ".footerCol:nth-child(2) > .desktop__footerlinks"
+     - ".footerCol:nth-child(3) > .desktop__footerlinks"
+     - ".footerCol:nth-child(4) > .desktop__footerlinks"
+     - ".footerCol:nth-child(5) > .desktop__footerlinks"
+   - `<a data-analytics-type="footerlink">` elements with the following attributes and values:
+     - "a[data-analytics-value=\"Study with Us\"]", "a[href$=\"life-at-rmit\"][data-analytics-value=\"Life at RMIT\"]", "a[href$=\"research\"][data-analytics-value=\"Research\"]", "a[href$=\"partner\"][data-analytics-value=\"Partner\"]", "a[data-analytics-value=\"About\"][href$=\"about\"]"
 
   3. User-Centric Explanation:
-     - Screen reader users might not be able to navigate through these impacted elements, causing confusion and navigation difficulties as they try to access content or perform actions on the Homepage.
+   - Screen reader users might be unable to perceive the correct hierarchy of content due to the missing required child roles, which could lead to navigation and comprehension issues.
 
   4. User Story/Business Impact:
-     - When a screen reader user tries to explore the Homepage footer links, the lack of appropriate children roles for the ARIA-required roles causes confusion, making it difficult for them to navigate and find the desired content or perform actions, leading to potential frustration and abandonment.
+   - When a user with a screen reader tries to navigate the footer section on the Homepage, the incorrect use of ARIA roles can cause confusion, potentially leading to frustration and abandonment of the page.
 
   5. WCAG Reference:
-     - The violation tags indicate that this issue aligns with the following guidelines under WCAG 2.2: cat.aria, wcag2a, wcag131, EN-301-549, EN-9.1.3.1
+   - The violation is associated with the following guidelines: "WCAG 2.2" (Level A) and "EN-301-549", "EN-9.1.3.1".
 
   6. Remediation:
-     - Ensure that any ARIA roles (in this case, listbox or treeitem) have the required child roles specified according to their respective semantics. For example, a listbox should contain option elements as children.
-       - In this case, it is likely that a listbox role is being used on the unordered lists (ul). To address this issue, consider replacing these ul tags with ol or nav tags and use the appropriate aria-role and child roles to maintain accessibility compliance.
+   - Ensure that all elements with an ARIA role have the required child roles. For instance, if a `<ul>` has an ARIA role, it should contain at least one `<li>`. Similarly, ensure that the correct ARIA roles are used for each element. For example, use `role="listitem"` for list items and `role="button"` for interactive buttons. More information on how to correctly apply ARIA roles can be found here: https://www.w3.org/TR/wcag21-techs-aria/
 
 ===== chrome - Courses - Submenu =====
 1. Contextual Summary:
-     - Violation ID: aria-required-children
-     - Impact: critical
-     - Description: The page contains an ARIA role that requires certain child roles, but the required children are missing.
+   - Violation ID: aria-required-children
+   - Impact: critical
+   - Description: Elements with an ARIA role that require child roles must contain them. Certain ARIA roles must contain particular children.
 
-  2. Impacted Elements:
-     - HTML elements with the `ul` class "desktop__footerlinks" and `a` elements with specific attributes (href, data-analytics-type, and data-analytics-value).
+   2. Impacted Elements:
+   - HTML elements impacted include the `<ul>` elements inside each of the classes `.footerCol` and the `<a>` element with data-analytics attributes.
 
-  3. User-Centric Explanation:
-     - Screen reader users might not be able to navigate through the footer links properly due to the missing ARIA roles, causing confusion and potential difficulty in comprehension of content.
+   3. User-Centric Explanation:
+   - Screen reader users might be unable to perceive content properly because some ARIA roles are missing required children, leading to navigation and comprehension issues.
 
-  4. User Story/Business Impact:
-     - When a screen reader user tries to access the footer links on the Courses - Submenu page, they might encounter navigation issues, leading to frustration and potentially leaving the page without interacting with important information or links.
+   4. User Story/Business Impact:
+   - When a user with a screen reader tries to navigate through the footer links in the "Courses - Submenu", they might miss important information or be unable to reach specific destinations on the page, causing frustration and potential loss of engagement.
 
-  5. WCAG Reference:
-     - The violation is associated with the following guidelines: cat.aria, wcag2a, wcag131, EN-301-549, EN-9.1.3.1
+   5. WCAG Reference:
+   - WCAG 2.2 guidelines associated with this violation include `cat.aria`, `wcag2a`, `wcag131`, `EN-301-549`, and `EN-9.1.3.1`.
 
-  6. Remediation:
-     - Ensure that all required ARIA roles have their respective child roles. For this specific violation, it is necessary to review the ARIA role usage on the footer links and add any missing child roles.
+   6. Remediation:
+   - Review the ARIA roles used in the affected elements and ensure they follow proper hierarchies as documented in the WAI-ARIA specification (https://www.w3.org/TR/wai-aria/). If necessary, add or remove child roles to meet accessibility requirements.
 
-     - Violation ID: tabindex
-     - Impact: serious
-     - Description: The `tabindex` attribute has values greater than 0, which may cause unexpected focus order.
+   7. Contextual Summary:
+   - Violation ID: tabindex
+   - Impact: serious
+   - Description: Ensure tabindex attribute values are not greater than 0; elements should not have tabindex greater than zero.
 
-  7. Impacted Elements:
-     - The HTML element with the class "topnav-skiplink" and a specific `a` tag within it.
+   8. Impacted Elements:
+   - The affected element is the `<a>` element with the class `.topnav-skiplink`.
 
-  8. User-Centric Explanation:
-     - Users navigating via keyboard might encounter unexpected focus order due to the tabindex attribute having values greater than 0, which could lead to confusion and difficulty in accessing content.
+   9. User-Centric Explanation:
+   - Users navigating through content using a keyboard might encounter difficulties if certain elements are not properly ordered in the tab sequence due to a tabindex value greater than 0.
 
-  9. User Story/Business Impact:
-     - When a user with a keyboard navigation tries to navigate through the page's topnav menu, they might encounter unexpected focus order, leading to frustration and potential difficulties in interacting with important elements on the page.
+   10. User Story/Business Impact:
+   - When users with keyboard navigation try to navigate the page, they might miss important content or get stuck because an element is improperly focused, leading to frustration and potential loss of engagement.
 
-  10. WCAG Reference:
-     - The violation is associated with the following guidelines: cat.keyboard, best-practice
+   11. WCAG Reference:
+   - WCAG 2.2 guidelines associated with this violation include `cat.keyboard` and `best-practice`.
 
-  11. Remediation:
-     - Set the `tabindex` attribute value to 0 or remove it if not necessary for specific use cases. In this specific violation case, set the tabindex attribute value of the topnav-skiplink's a element to 0 or remove the attribute if it is not needed for keyboard navigation in that context.
+   12. Remediation:
+   - Reduce the tabindex value of the affected element to 0 or remove it if not required for keyboard navigation to provide a seamless user experience for all users.
 
 ===== chrome - Study with Us - Submenu =====
 1. Contextual Summary:
-   - Violation ID: aria-required-children
-   - Impact: critical
-   - Description: The page uses ul and a elements with the 'tabindex' attribute within an element having an ARIA role that requires child roles, which is not allowed.
+     - Violation ID: `aria-required-children`
+     - Impact: Critical
+     - Description: Certain ARIA roles must contain particular children. In this case, the parent element with a role of 'tablist' does not contain allowed child elements (ul[tabindex], a[tabindex]).
 
-   2. Impacted Elements:
-   - HTML elements impacted:
-     - `<ul class="desktop__footerlinks">` in the footerCol elements (1-5)
-     - `<a data-analytics-type="footerlink" ...>` links within the ul elements (listed individually in the JSON array)
+  2. Impacted Elements:
+     - HTML elements: `#accordion` (parent tablist) and its child elements: ul within .footerCol classes, a elements with data-analytics-type="footerlink"
 
-   3. User-Centric Explanation:
-   - Screen reader users might be unable to perceive the hierarchy and purpose of the footer link list correctly due to the missing ARIA children structure, causing confusion and navigation difficulties.
+  3. User-Centric Explanation:
+     - Screen reader users might be unable to navigate through the page content as intended due to invalid ARIA role usage and children relationships. This can cause confusion and difficulties in comprehension and navigation.
 
-   4. User Story/Business Impact:
-   - When a user with a screen reader tries to navigate the footer section on the Study with Us - Submenu page, they might get confused about the structure of the links, leading to possible misinterpretation of content and potential difficulties in finding desired information. This could result in increased frustration and potentially higher bounce rates.
+  4. User Story/Business Impact:
+     - When a screen reader user tries to explore the Study with Us - Submenu, they encounter issues navigating through the content, causing confusion and potentially leading to frustration or abandonment of the page.
 
-   5. WCAG Reference:
-   - WCAG 2.1 (cat.aria) guidelines, particularly:
-     - WCAG 1.3.1 Info and Relationships (EN-301-549, EN-9.1.3.1)
+  5. WCAG Reference:
+     - Applicable WCAG 2.2 guidelines: `1.3.1 Info and Relationships (Level A)`, `4.1.2 Name, Role, Value` (Level AA)
 
-   6. Remediation:
-   - Ensure that the ul elements within the footerCol elements have appropriate child ARIA roles, such as "listitem" or "group", to properly communicate their structure and purpose. For example:
-
-```html
-<ul class="desktop__footerlinks" role="list">
-  <li role="listitem">
-    <a data-analytics-type="footerlink" data-analytics-value="Study with Us" href="/study-with-us">Study with Us</a>
-  </li>
-  <!-- More list items -->
-</ul>
-```
-
-   - In addition, review and adjust the use of tabindex on other elements throughout the page, as per best practices.
-
-   ------------------------
-
-   1. Contextual Summary:
-   - Violation ID: tabindex
-   - Impact: serious
-   - Description: The page uses an element with a tabindex attribute value greater than 0.
-
-   2. Impacted Elements:
-   - HTML elements impacted: `<a class="topnav-skiplink" ...>` skip link.
-
-   3. User-Centric Explanation:
-   - Screen reader users might encounter unexpected content or navigation when encountering an element with a tabindex value greater than 0, as it would be reached outside of the natural order of elements within the DOM.
-
-   4. User Story/Business Impact:
-   - When a user with a screen reader tries to navigate through the main menu on the Study with Us - Submenu page, they might unexpectedly encounter the skip link before other important content or navigation options, potentially causing confusion and frustration. This could lead to difficulties in finding desired information or interacting with the intended content.
-
-   5. WCAG Reference:
-   - WCAG 2.1 (cat.keyboard) guidelines, particularly:
-     - Best practices for keyboard interaction
-
-   6. Remediation:
-   - Adjust the tabindex value of the skip link to 0 or remove it if not necessary, as per best practices for keyboard navigation. For example:
-
-```html
-<a class="topnav-skiplink" href="#topnav_skipcontent">SKIP TO CONTENT</a>
-```
+  6. Remediation:
+     - Ensure that all elements with an ARIA role follow the correct usage pattern by containing appropriate child roles. Update the HTML structure to conform to ARIA specifications and provide better navigation for screen reader users.
 
 ===== chrome - International - Submenu =====
 1. Contextual Summary:
    - Violation ID: aria-required-children
-   - Impact: Critical
-   - Description: The ARIA role on an element does not have the required child roles.
+   - Impact: critical
+   - The issue lies in the use of ARIA roles without the necessary child roles on an unordered list (ul) and some anchor tags (a) within the International - Submenu section. This inconsistency can cause confusion for assistive technology users, impacting their navigation and comprehension.
 
   2. Impacted Elements:
-   - HTML elements: #accordion (role="tablist")
-   - Children of the impacted element: ul[tabindex], a[tabindex]
+   - The HTML elements affected are the following unordered lists with tabindex: `<ul class="desktop__footerlinks">` within each `.footerCol` on the page, as well as the specific anchor tags (a) that have a tabindex: `<a data-analytics-type="footerlink" ...>`.
 
   3. User-Centric Explanation:
-   Screen reader users might encounter confusion as they navigate through the page because certain ARIA roles do not contain their required children, making it difficult for them to perceive content and navigate effectively.
+   - Assistive technology users, such as screen reader users, might be unable to perceive the intended meaning of the affected elements due to the missing or incorrect ARIA roles and children. This can lead to issues in navigation and understanding the structure and content of the page.
 
   4. User Story/Business Impact:
-   When a screen reader user tries to access the International - Submenu page in Chrome, the missing child roles for the "tablist" role cause difficulties in understanding and navigating the content, potentially leading to frustration and page abandonment.
+   - When a user with a screen reader tries to navigate the International - Submenu on the page, they might encounter confusion due to inconsistencies in the ARIA roles and children. This could result in users getting lost or abandoning the navigation process, potentially impacting engagement and conversion rates.
 
   5. WCAG Reference:
-   - WCAG 2.2 guideline: [1.3.1 Info and Relationships (Satisfied with Failures)](https://www.w3.org/TR/WCAG21/#info-and-relationships)
-   - EN-301-549: [EN 301 549 V2.1.2:2018 Accessibility requirements technique for WCAG 2.0 - 1.3.1 Info and relationships (non-text content)](https://www.en301745.eu/en/301549v212)
-   - EN-9.1.3.1: [9.1.3.1 Relationships](https://www.en301745.eu/en/9_1_3_1)
+   - The violation is related to WCAG 2.2 guideline EN-9.1.3.1 (Information, Identify Change: Information, Identify, and Operate). It also aligns with the following tags: cat.aria, wcag2a, EN-301-549.
 
   6. Remediation:
-   - Ensure that the ARIA roles on each impacted element have the required child roles specified, as defined in the [ARIA specification](https://www.w3.org/TR/wai-aria-practices-1.2/) for the "tablist" role and its children.
-   - Adjust the tabindex attribute values of any elements that should not receive focus (such as decorative images or placeholders) to a value of 0, or remove them if they are not necessary for keyboard navigation. For navigation elements, ensure that the tabindex value is in a logical order for users navigating through the page.
+   - Ensure that elements with ARIA roles that require child roles contain them. Review the affected HTML elements (ul and a) and update their ARIA properties to adhere to the appropriate structure for assistive technology users. For more information, visit this link: [https://dequeuniversity.com/rules/axe/4.10/aria-required-children?application=axeAPI](https://dequeuniversity.com/rules/axe/4.10/aria-required-children?application=axeAPI)
+
+   - -------------------------------
+
+   1. Contextual Summary:
+   - Violation ID: tabindex
+   - Impact: serious
+   - The issue is the incorrect use of tabindex values greater than 0 on an anchor tag within the top navigation menu. This can cause issues for keyboard-only users and impact their ability to navigate through the page effectively.
+
+  2. Impacted Elements:
+   - The HTML element affected is the skip link anchor tag with a class "topnav-skiplink" and a tabindex greater than 0 (`<a class="topnav-skiplink" href="#topnav_skipcontent" tabindex="1" title="Skip to content">SKIP TO CONTENT</a>`).
+
+  3. User-Centric Explanation:
+   - Keyboard-only users might encounter difficulty navigating through the page when they encounter an element with a tabindex greater than 0, as it moves focus away from the intended navigation order. This can cause confusion and potential frustration during user interaction.
+
+  4. User Story/Business Impact:
+   - When a keyboard-only user tries to navigate the top navigation menu on the page, they might face challenges due to an incorrectly set tabindex value. This could result in users getting lost or abandoning the navigation process, potentially impacting engagement and conversion rates.
+
+  5. WCAG Reference:
+   - The violation is related to WCAG 2.2 guideline EN-2.4.3 (Focus Order: Focusable Components, Navigable): Focus Order; and it also aligns with the following tag: cat.keyboard.
+
+  6. Remediation:
+   - Update the tabindex value on the affected anchor tag to 0 or use ARIA attributes (such as aria-hidden="true") to prevent focus navigation issues for keyboard-only users. For more information, visit this link: [https://dequeuniversity.com/rules/axe/4.10/tabindex?application=axeAPI](https://dequeuniversity.com/rules/axe/4.10/tabindex?application=axeAPI)
 
 ===== chrome - Contact Form =====
 1. Contextual Summary:
-   - Violation ID: aria-roles
-   - Impact: Critical
-   - The page contains ARIA roles that are not valid, specifically "image". This issue can cause confusion for screen reader users and potentially lead to misinterpretation of the content.
+       The Contact Form page contains the following accessibility violations:
+       - Aria Roles Critical Violation: Incorrect usage of ARIA roles on elements, specifically "image".
+       - Color Contrast Serious Violation: Insufficient color contrast in various elements.
+       - HTML has no lang Attribute Serious Violation: The <html> element is missing the 'lang' attribute.
+       - Label Critical Violation: Multiple form elements lack labels, affecting screen reader users and others navigating with assistive technologies.
+       - Select Name Critical Violation: Some select elements are missing accessible names.
 
   2. Impacted Elements:
-   - HTML elements with role="image" within the `<div>` tags containing classes "rmito-masthead__image", "rmito-image rmito-image--background", or "rmito-responsive-image". These are located at ".rmit-masthead__image" and "div[alt=\"\"]".
+     - For Aria Roles violation: ".rmit-masthead__image", "div[alt=\"\"]"
+     - For Color Contrast violation: Multiple form elements (e.g., <select> and <a>)
+     - For HTML has no lang Attribute violation: The <html> element
+     - For Label violation: Multiple form elements (<input>, <select>)
+     - For Select Name violation: Multiple select elements
 
   3. User-Centric Explanation:
-   - Screen reader users might be unable to perceive the purpose of these images, causing confusion and potential navigation and comprehension issues as they attempt to interact with the Contact Form.
+     - Aria Roles Critical Violation: Screen reader users might be unable to perceive the purpose of the impacted images, causing confusion and potential navigation issues.
+     - Color Contrast Serious Violation: Users with visual impairments may have difficulty reading and understanding content when there is insufficient color contrast between foreground and background elements.
+     - HTML has no lang Attribute Serious Violation: Assistive technologies such as screen readers might not be able to correctly interpret the language of the page, leading to incorrect pronunciation or misunderstanding of content.
+     - Label Critical Violution: Screen reader users and others navigating with assistive technologies may have difficulty understanding the purpose of form elements, which can lead to confusion and potential form abandonment.
+     - Select Name Critical Violation: Screen reader users might not be able to understand the purpose of select elements, causing confusion and potential navigation issues.
 
   4. User Story/Business Impact:
-   - When a user with a screen reader tries to fill out the Contact Form, the labeling issue causes confusion leading to form abandonment. This may result in lost opportunities for engagement and potential loss of business.
+     - Aria Roles Critical Violation: When a user with a screen reader tries to interact with the Contact Form, they might be unable to perceive the purpose of the images, leading to confusion and form abandonment.
+     - Color Contrast Serious Violation: Users with visual impairments may have difficulty reading and understanding content on the Contact Form, potentially causing them to abandon the form or misunderstand its instructions.
+     - HTML has no lang Attribute Serious Violation: Assistive technology users might experience incorrect pronunciation or misunderstanding of the page's content, leading to frustration and potential form abandonment.
+     - Label Critical Violation: Users with screen readers or other assistive technologies may struggle to understand the purpose of form elements on the Contact Form, potentially causing confusion and form abandonment.
+     - Select Name Critical Violation: Screen reader users might not be able to comprehend the purpose of select elements on the Contact Form, leading to confusion and potential form abandonment.
 
-  5. WCAG Reference:
-   - Guideline 4.1.2 Name, Role, Value (Level A): All non-visible elements have a name, role, or value that can be programmatically determined; all interactive elements do not rely solely on script for the purpose of determining their name, role, and value.
-
-  6. Remediation:
-   - Update the ARIA roles within the affected HTML elements to conform to valid values, such as "presentation" or "none", depending on the purpose of the element. For example, replace "role=\"image\"" with "role=\"none\"".
+  5. Remediation:
+     - Aria Roles Critical Violation: Update the ARIA roles for the affected images to correctly describe their purposes.
+     - Color Contrast Serious Violation: Increase the contrast between foreground and background elements in the Contact Form, ensuring that they meet the minimum color contrast ratio requirements.
+     - HTML has no lang Attribute Serious Violation: Add a 'lang' attribute to the <html> element to specify the language of the page.
+     - Label Critical Violation: Provide explicit labels for all form elements using ARIA attributes, titles, or surrounding text.
+     - Select Name Critical Violation: Ensure that select elements have an accessible name by providing ARIA labels or using proper surrounding HTML structure to create implicit labels.
 
 
 ===== Aggregated Insights =====
-------------------------
-  Overall Statistics:
-  - Total number of critical violations across pages: 6 (5 for aria-required-children and 1 for invalid aria-roles)
-  - Total number of serious violations across pages: 2 (tabindex)
+**Aggregated Analysis**
 
-  Common Patterns:
-  - ARIA issues related to the lack of required child roles in various elements, specifically unordered lists (ul) and anchor tags (a).
-  - Misuse or missing tabindex values causing unexpected focus order.
+   **Overall Statistics:**
+   - Total number of critical violations: 8 (ARIA Roles, Labels, Select Names)
+   - Total number of serious violations: 3 (Color Contrast, HTML lang Attribute, Tabindex)
 
-  Cross-page Insights:
-  - Footer sections across multiple pages contain similar issues with ARIA roles not having the correct child roles. It is recommended to review footer structure consistency for accessibility compliance.
-  - Tabindex attribute misuse or missing values are found throughout various pages, emphasizing the need to strictly adhere to tabindex best practices across the site.
-  - Skipping links have inconsistencies in tabindex usage across pages, so it is essential to standardize their handling for better keyboard navigation.
+   **Common Patterns or Recurring Issues:**
+   - Incorrect usage of ARIA roles on elements (images in this case)
+   - Insufficient color contrast between foreground and background elements
+   - Missing 'lang' attribute for the <html> element
+   - Lack of labels for form elements
+   - Select elements missing accessible names
 
-  Prioritization Recommendations:
-  - Address critical ARIA violations first (impacting screen reader users) by ensuring proper children roles for elements with defined ARIA roles and validating the use of ARIA roles throughout the site.
-  - Secondly, focus on fixing issues related to tabindex to ensure keyboard navigation is consistent and predictable for all users.
-  - Additionally, make necessary updates to skip links to ensure they do not impact screen reader navigation or keyboard interaction.
+   **Cross-Page Insights:**
+   - ARIA roles issues are present across multiple pages (Homepage, Courses - Submenu, Study with Us - Submenu, International - Submenu)
+   - Color contrast and HTML lang attribute issues appear on the Contact Form page
+   - Tabindex issue is present in the top navigation menu of some pages
+   - Lack of labels for form elements and select elements without accessible names are found across multiple pages containing forms
+
+   **Recommendations for Prioritizing Remediation Efforts:**
+   - Address critical violations (ARIA Roles, Labels, Select Names) to ensure accessibility for users with screen readers and other assistive technologies.
+   - Improve color contrast to make the content more accessible for users with visual impairments.
+   - Add a 'lang' attribute to the <html> element to support assistive technology interpretation of page content.
+   - Implement proper use of ARIA roles, labels, and select elements across all pages containing forms.
+   - Review and update navigation elements (such as tabindex) to ensure they follow best practices for keyboard-only users.
