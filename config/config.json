@@ -1,0 +1,11 @@
+{
+  "AUT": "https://www.rmit.edu.au",
+  "globalTimeout": 15000,
+  "screenshotsDir": "./screenshots",
+  "browsers": ["chrome"],
+  "ai": {
+    "model": "mistral:7b-instruct",
+    "provider": "ollama",
+    "endpoint": "http://localhost:11434"
+  }
+}
